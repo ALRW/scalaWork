@@ -18,4 +18,12 @@ object Ch2 {
   def curry[A,B,C](fn: (A,B) => C): A => (B => C) = {
     (a: A) => (b: B) => fn(a,b)
   }
+
+  def uncurry[A,B,C](fn: A => B => C): (A, B) => C = {
+    (a: A, b: B) => fn(a)(b)
+  }
+
+  def compose[A,B,C](fn: B => C, fn2: A => B): A => C = {
+    (a: A) => fn(fn2(a))
+  }
 }
