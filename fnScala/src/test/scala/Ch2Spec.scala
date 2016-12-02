@@ -46,5 +46,5 @@ class Ch2Spec extends FunSpec with Matchers {
       assert(Ch2.compose(fn3, fn4)(1) == fn5(1))
     }
   }
-  
+
 }
