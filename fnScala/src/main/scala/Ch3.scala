@@ -53,7 +53,16 @@ object List {
     }
   }
 
-  def init[A](l: List[A]):List[A] = ???
+  def init[A](l: List[A]):List[A] ={
+
+    def helper[A](ls: List[A], xs: List[A]): List[A] = ls match {
+      case Nil => Nil
+      case Cons(x, Nil) => xs
+      case Cons(x, xy) => Cons(x, helper(xy, xs))
+    }
+
+    helper(l, List())
+  }
 }
 
 

@@ -47,5 +47,11 @@ class Ch3Spec extends FunSpec with Matchers {
     it("drops the last element of a list and returns the initial items"){
       assert(List.init(List(1,2,3,4)) == List(1,2,3))
     }
+    it("returns nil if passed and empty list"){
+      assert(List.init(List()) == Nil)
+    }
+    it("returns an empty list if passed a list of one item"){
+      assert(List.init(List(1)) == Nil)
+    }
   }
 }
