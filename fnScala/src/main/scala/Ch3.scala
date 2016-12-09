@@ -63,11 +63,39 @@ object List {
 
     helper(l, List())
   }
+
+  def foldright[A, B](as: List[A], z: B)(f: (A, B) => B):B = {
+    case Nil => z
+    case Cons(x, xs) => f(x, foldright(xs, z)(f))
+  }
+
+  def length[A](l: List[A]): Int = {
+    foldright(l, 0)((a,b) => b + 1)
+  }
+
+  @tailrec
+  def foldLeft[A,B](as:List[A], z: B)(f: (B,A) => B):B = as match {
+    case Nil => z
+    case Cons(x, xs) => foldLeft(xs, f(z, x))(f)
+  }
+
+  def foldSum(l: List[Int]): Int = {
+    foldLeft(l,0)((x,y) => x + y)
+  }
+
+  def foldProduct(l: List[Int]): Int = {
+    foldLeft(l, 1)((x,y) => x * y)
+  }
+
+  def foldLength[A](l: List[A]): Int = {
+    foldLeft(l, 0)((x,y) => x + 1)
+  }
+
 }
 
 
 object Ch3 {
-  val x = List(1,2,3,4,5) match {
+  val x: Int = List(1,2,3,4,5) match {
     case Cons(x, Cons(2, Cons(4, _))) => x
     case Nil => 42
     case Cons(x, Cons(y, Cons(3, Cons(4, _)))) => x + y

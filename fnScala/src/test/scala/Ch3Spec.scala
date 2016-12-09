@@ -1,7 +1,8 @@
 import org.scalatest.{FunSpec, Matchers}
+
 class Ch3Spec extends FunSpec with Matchers {
 
-  describe("pattern matching"){
+  describe("#pattern matching"){
     it("should return the correctly matched value"){
       assert(Ch3.x == 3)
     }
@@ -52,6 +53,36 @@ class Ch3Spec extends FunSpec with Matchers {
     }
     it("returns an empty list if passed a list of one item"){
       assert(List.init(List(1)) == Nil)
+    }
+  }
+
+  describe("#foldLeft"){
+    it("tail recursively applies a function to all elements of a list"){
+      assert(List.foldLeft(List(1,2,3,4,5), 4)((a,b) => a + b) == 19)
+    }
+  }
+
+  describe("#length"){
+    it("computes the length of a List using foldRigth"){
+      assert(List.length(List(1,2,3,4,5)) == 5)
+    }
+  }
+
+  describe("#foldSum"){
+    it("uses foldLeft to compute the sum of a list"){
+      assert(List.foldSum(List(1,2,3,4,5)) == 15)
+    }
+  }
+
+  describe("#foldProduct"){
+    it("uses foldLeft to compute the product of a list"){
+      assert(List.foldProduct(List(2,2,2,2)) == 16)
+    }
+  }
+
+  describe("#foldLength"){
+    it("uses foldLeft to compute the length of a list"){
+      assert(List.foldLength(List(1,1,1,1,1,1,1,1)) == 8)
     }
   }
 }
