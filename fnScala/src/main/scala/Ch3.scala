@@ -95,10 +95,29 @@ object List {
     foldright(l,k)((x, y) => Cons(x,y))
   }
 
-  def addOne(l: List[Int]): List[Int] = {
-
+  def addOne(l: List[Int]): List[Int] = l match{
+    case Nil => Nil
+    case Cons(h,t) => Cons(h + 1, addOne(t))
   }
+
+  def doubleToString(l:List[Double]): List[String] = l match{
+    case Nil => Nil
+    case Cons(h,t) => Cons(h.toString, doubleToString(t))
+  }
+
+  def map[A, B](l:List[A])(f: A => B): List[B] = l match{
+    case Nil => Nil
+    case Cons(h,t) => Cons(f(h), map(t)(f))
+  }
+
+  def filter[A](l:List[A])(f: A=> Boolean): List[A] = l match{
+    case Nil => Nil
+    case Cons(h,t) if f(h) => Cons(h, filter(t) (f))
+    case Cons(h,t) if !f(h) => filter(t) (f)
+  }
+
 }
+
 
 
 object Ch3 {

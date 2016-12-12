@@ -97,4 +97,28 @@ class Ch3Spec extends FunSpec with Matchers {
       assert(List.addOne(List(1,2,3,4)) == List(2,3,4,5))
     }
   }
+
+  describe("#doubleToString"){
+    it("converts each element of a list of doubles to strings"){
+      assert(List.doubleToString(List(1.1,1.4,1.5)) == List("1.1", "1.4", "1.5"))
+    }
+  }
+
+  describe("#map"){
+    it("modifies each element of a list according to a given function"){
+      assert(List.map(List(1,2,3,4,5))((e) => e*2) == List(2,4,6,8,10))
+    }
+  }
+
+  describe("#filter"){
+    it("remove all elements from a list unless they satisfy a given predicate"){
+      assert(List.filter(List(1,2,3,4,5))((e) => e%2 == 0) == List(2,4))
+    }
+  }
+
+  describe("#flatMap"){
+    it("applies a function on each element and returns a single list"){
+      assert(List.flatMap(List(1,2,3)) (i=>List(i,i)) == List(1,1,2,2,3,3))
+    }
+  }
 }
