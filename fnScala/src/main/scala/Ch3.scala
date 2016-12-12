@@ -64,7 +64,7 @@ object List {
     helper(l, List())
   }
 
-  def foldright[A, B](as: List[A], z: B)(f: (A, B) => B):B = {
+  def foldright[A, B](as: List[A], z: B)(f: (A, B) => B):B = as match{
     case Nil => z
     case Cons(x, xs) => f(x, foldright(xs, z)(f))
   }
@@ -91,6 +91,13 @@ object List {
     foldLeft(l, 0)((x,y) => x + 1)
   }
 
+  def foldAppend[A](l: List[A], k: List[A]): List[A] = {
+    foldright(l,k)((x, y) => Cons(x,y))
+  }
+
+  def addOne(l: List[Int]): List[Int] = {
+
+  }
 }
 
 

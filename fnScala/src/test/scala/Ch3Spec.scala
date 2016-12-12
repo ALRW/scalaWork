@@ -85,4 +85,16 @@ class Ch3Spec extends FunSpec with Matchers {
       assert(List.foldLength(List(1,1,1,1,1,1,1,1)) == 8)
     }
   }
+
+  describe("#foldAppend"){
+    it("uses a fold method to append two lists together"){
+      assert(List.foldAppend(List(1,2,3), List(4,5,6)) == List(1,2,3,4,5,6))
+    }
+  }
+
+  describe("#addOne"){
+    it("adds one to each element of a list of integers"){
+      assert(List.addOne(List(1,2,3,4)) == List(2,3,4,5))
+    }
+  }
 }
