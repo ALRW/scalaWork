@@ -121,4 +121,17 @@ class Ch3Spec extends FunSpec with Matchers {
       assert(List.flatMap(List(1,2,3)) (i=>List(i,i)) == List(1,1,2,2,3,3))
     }
   }
+
+  describe("#flatMapFilter"){
+    it("uses flatMap to implement filter"){
+      assert(List.flatMapFilter(List(2,3,4,5))(e => e%2 != 0) == List(3,5))
+    }
+  }
+
+  describe("#zipper"){
+    it("takes two lists of Ints and creates a new list of the sums of Ints"){
+      assert(List.zipper(List(1,2,3), List(1,2,3)) == List(2,4,6))
+    }
+  }
+
 }

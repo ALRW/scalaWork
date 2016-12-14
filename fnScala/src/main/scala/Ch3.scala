@@ -116,6 +116,21 @@ object List {
     case Cons(h,t) if !f(h) => filter(t) (f)
   }
 
+  def flatMap[A, B](l: List[A])(f: A => List[B]): List[B] = l match {
+    case Nil => Nil
+    case Cons(h,t) => append(f(h), flatMap(t)(f))
+  }
+
+  def flatMapFilter[A](l:List[A])(f: A => Boolean): List[A] = {
+    flatMap(l)(a => if(f(a)) List(a) else Nil)
+  }
+
+  def zipper(ls: List[Int], js: List[Int]):List[Int] = (ls,js) match {
+    case (_, Nil) => Nil
+    case (Nil, _) => Nil
+    case (Cons(h1,t1), Cons(h2,t2)) => Cons(h1 + h2, zipper(t1,t2))
+  }
+
 }
 
 
