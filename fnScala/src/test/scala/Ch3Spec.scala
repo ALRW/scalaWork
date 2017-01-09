@@ -133,5 +133,10 @@ class Ch3Spec extends FunSpec with Matchers {
       assert(List.zipper(List(1,2,3), List(1,2,3)) == List(2,4,6))
     }
   }
+   describe("#zipWith"){
+     it("generalises the zipper function"){
+       assert(List.zipWith(List("a"), List("b"))((a,b) => a + b) == List("ab"))
+     }
+   }
 
 }
