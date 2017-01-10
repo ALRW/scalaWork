@@ -11,4 +11,10 @@ class TreeSpec extends FunSpec with Matchers {
     }
   }
 
+  describe("#maximum"){
+    it("Should return the highest value in a Tree[Int]"){
+      assert(Tree.maximum(Branch(Branch(Leaf(1), Leaf(2)), Leaf(3))) == 3)
+    }
+  }
+
 }
