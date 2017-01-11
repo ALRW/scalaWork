@@ -17,4 +17,16 @@ class TreeSpec extends FunSpec with Matchers {
     }
   }
 
+  describe("#depth"){
+    it("Should return the maximum depth of a Tree[A]"){
+      assert(Tree.depth(Branch(Branch(Leaf(1), Leaf(2)), Leaf(3))) == 2)
+    }
+  }
+
+  describe("#map"){
+    it("Should apply a given function to each element of a Tree"){
+      assert(Tree.map(Branch(Branch(Leaf(1), Leaf(2)), Leaf(3)))(a => a + 1) == Branch(Branch(Leaf(2), Leaf(3)), Leaf(4)))
+    }
+  }
+
 }
