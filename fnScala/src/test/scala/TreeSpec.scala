@@ -29,4 +29,10 @@ class TreeSpec extends FunSpec with Matchers {
     }
   }
 
+
+  describe("#fold"){
+    it("Should generalise all the above functions"){
+      assert(Tree.fold(Branch(Branch(Leaf(1), Leaf(2)), Leaf(3)))(x => 1)(1 + _ + _) == 5)
+    }
+  }
 }
