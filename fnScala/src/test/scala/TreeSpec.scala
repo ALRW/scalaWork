@@ -35,4 +35,31 @@ class TreeSpec extends FunSpec with Matchers {
       assert(Tree.fold(Branch(Branch(Leaf(1), Leaf(2)), Leaf(3)))(x => 1)(1 + _ + _) == 5)
     }
   }
+
+  describe("#sizeViaFold"){
+    it("Should use the generalised version of fold to return the number of nodes on a tree"){
+      assert(Tree.size(Branch(Branch(Leaf(1), Leaf(2)), Leaf(3))) == 5)
+    }
+    it("should work for larger Trees"){
+      assert(Tree.size(Branch(Branch(Branch(Branch(Leaf(1), Leaf(2)), Leaf(3)), Leaf(4)), Leaf(5))) == 9)
+    }
+  }
+
+  describe("#maximumViaFold"){
+    it("Should return the highest value in a Tree[Int]"){
+      assert(Tree.maximum(Branch(Branch(Leaf(1), Leaf(2)), Leaf(3))) == 3)
+    }
+  }
+
+  describe("#depthViaFold"){
+    it("Should return the maximum depth of a Tree[A]"){
+      assert(Tree.depth(Branch(Branch(Leaf(1), Leaf(2)), Leaf(3))) == 2)
+    }
+  }
+
+  describe("#mapViaFold"){
+    it("Should apply a given function to each element of a Tree"){
+      assert(Tree.map(Branch(Branch(Leaf(1), Leaf(2)), Leaf(3)))(a => a + 1) == Branch(Branch(Leaf(2), Leaf(3)), Leaf(4)))
+    }
+  }
 }
