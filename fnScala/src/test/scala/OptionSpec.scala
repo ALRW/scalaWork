@@ -40,4 +40,10 @@ class OptionSpec extends FunSpec with Matchers{
       assert(Some(2).filter(_ % 2 == 0) == Some(2))
     }
   }
+
+  describe("#variance"){
+    it("calculates the possible variance of a list using flatmap"){
+      assert(Option.variance(Seq(1.1,1.2,1.2,1.3)) == Some(0.0049999999999999975))
+    }
+  }
 }
