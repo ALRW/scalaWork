@@ -1,4 +1,3 @@
-
 sealed trait Option[+A] {
 
   def map[B](f: A => B): Option[B] = this match {
@@ -12,12 +11,12 @@ sealed trait Option[+A] {
     case Some(y) => f(y)
   }
 
-  def getOrElse[B >: A](default: => B): B = this match{
+  def getOrElse[B >: A](default: => B): B = this match {
     case Some(x) => x
     case _ => default
   }
 
-  def orElse[B >: A](ob: => Option[B]):Option[B] = this match {
+  def orElse[B >: A](ob: => Option[B]): Option[B] = this match {
     case Some(x) => this
     case _ => ob
   }
@@ -28,7 +27,6 @@ sealed trait Option[+A] {
   }
 
 
-
 }
 
 object Option {
@@ -36,11 +34,27 @@ object Option {
   def variance(xs: Seq[Double]): Option[Double] = {
 
     def mean(ys: Seq[Double]): Option[Double] = {
-      if(ys.isEmpty) None else Some(ys.sum / ys.length)
+      if (ys.isEmpty) None else Some(ys.sum / ys.length)
     }
-    mean(xs) flatMap(m => mean(xs map (y => math.pow(y - m, 2))))
+
+    mean(xs) flatMap (m => mean(xs map (y => math.pow(y - m, 2))))
   }
 
+  def map2[A, B, C](a: Option[A], b: Option[B])(f: (A, B) => C): Option[C] = (a, b) match {
+    case (_, None) => None
+    case (None, _) => None
+    case (Some(x), Some(y)) => Some(f(x, y))
+  }
+
+  def sequence[A](l: List[Option[A]]): Option[List[A]] = l match {
+    case Nil => Some(Nil)
+    case Cons(h, t) => h.flatMap(hi => sequence(t).map(li => Cons(hi, li)))
+  }
+
+
+
 }
+
 case class Some[A](get: A) extends Option[A]
+
 case object None extends Option[Nothing]

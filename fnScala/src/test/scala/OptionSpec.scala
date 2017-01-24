@@ -46,4 +46,22 @@ class OptionSpec extends FunSpec with Matchers{
       assert(Option.variance(Seq(1.1,1.2,1.2,1.3)) == Some(0.0049999999999999975))
     }
   }
+
+  describe("#map2"){
+    it("combines two Option values using a binary function"){
+      assert(Option.map2(Some(1), Some(2))((a,b) => a + b) == Some(3))
+    }
+    it("returns none if passed a none"){
+      assert(Option.map2(None, Some(2))((a,b) => a.toString + b.toString) == None)
+    }
+  }
+
+  describe("#sequence"){
+    it("turns a list of options into an option of a list if all values are present"){
+      assert(Option.sequence(List(Some(1), Some(2), Some(3))) == Some(List(1,2,3)))
+    }
+    it("returns None if any of the values are None"){
+      assert(Option.sequence(List(Some(1), None, Some(4))) == None)
+    }
+  }
 }
