@@ -51,6 +51,9 @@ object Option {
     case Cons(h, t) => h.flatMap(hi => sequence(t).map(li => Cons(hi, li)))
   }
 
+  def traverse[A, B](a: List[A])(f: A => Option[B]):Option[List[B]] = {
+    Option.sequence(List.map(a)(f))
+  }
 
 
 }

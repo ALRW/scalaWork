@@ -64,4 +64,19 @@ class OptionSpec extends FunSpec with Matchers{
       assert(Option.sequence(List(Some(1), None, Some(4))) == None)
     }
   }
+
+  describe("#traverse"){
+    it("traverses a list applying a function and returning None if any of the operations fails"){
+      assert(Option.traverse(List(1, 2, 3, "a")) {
+        case i: Int => Some(i)
+        case _ => None
+      } == None)
+    }
+    it("returns an option of a list if the function applies to all members"){
+      assert(Option.traverse(List(1, 2, 3, 4)) {
+        case i: Int => Some(i)
+        case _ => None
+      } == Some(List(1,2,3,4)))
+    }
+  }
 }
