@@ -14,9 +14,16 @@ sealed trait Either[+E, +A] {
     case l: Left[E] => l
   }
 
-  def orElse[EE >: E, B >: A](b: => Either[EE, B]): Either[EE, B] = ???
+  def orElse[EE >: E, B >: A](b: => Either[EE, B]): Either[EE, B] = this match {
+    case r: Right[A] => r
+    case _ => b
+  }
 
-  def map2[EE >: E, B, C](b: Either[EE, B])(f: (A,B) => C): Either[EE, C] = ???
+  def map2[EE >: E, B, C](b: Either[EE, B])(f: (A,B) => C): Either[EE, C] = (this, b) match {
+    case (_, l: Left[E]) => l
+    case (l: Left[E], _) => l
+    case (Right(x), Right(y)) => Right(f(x,y))
+  }
 }
 
 case class Left[+E](value: E) extends Either[E, Nothing]

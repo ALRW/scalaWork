@@ -20,4 +20,19 @@ class EitherSpec extends FunSpec with Matchers {
       Left(1).flatMap(a => Right(a)) should be(Left(1))
     }
   }
+
+  describe("orElse"){
+    it("returns a given default when passed a left"){
+      Left(1).orElse(Right("failing value")) should be(Right("failing value"))
+    }
+    it("returns a given value when correct"){
+      Right(1).orElse(Right("failing value")) should be(Right(1))
+    }
+  }
+
+  describe("map2"){
+    it("takes two potentially failing operations and if they pass performs a potentially failing function f on them"){
+      Right(1).map2(Right(2))((a, b) => a + b) should be(Right(3))
+    }
+  }
 }
