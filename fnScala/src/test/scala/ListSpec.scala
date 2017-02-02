@@ -1,6 +1,6 @@
 import org.scalatest.{FunSpec, Matchers}
 
-class Ch3Spec extends FunSpec with Matchers {
+class ListSpec extends FunSpec with Matchers {
 
   describe("#pattern matching"){
     it("should return the correctly matched value"){
