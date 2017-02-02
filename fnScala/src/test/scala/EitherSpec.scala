@@ -35,4 +35,16 @@ class EitherSpec extends FunSpec with Matchers {
       Right(1).map2(Right(2))((a, b) => a + b) should be(Right(3))
     }
   }
+
+  describe("sequence"){
+    it("turns a list of Eithers into an either of a list if all values are Right"){
+      Either.sequence(List(Right(1), Right(2), Right(3))) should be(Right(List(1,2,3)))
+    }
+  }
+
+  describe("traverse"){
+    it("traverses a list of items and applies a functin to each item if all values are present or returns the first failing value found"){
+      Either.traverse(List(1,2,3))(a => Right(a + 1)) should be(Right(List(2,3,4)))
+    }
+  }
 }
