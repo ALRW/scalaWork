@@ -4,9 +4,15 @@ sealed trait Either[+E, +A] {
     try Right(a)
     catch { case e: Exception => Left(e)}
 
-  def map[B](f: A => B): Either[E, B] = ???
+  def map[B](f: A => B): Either[E, B] = this match {
+    case Right(x) => Right(f(x))
+    case l: Left[E] => l
+  }
 
-  def flatMap[EE >: E, B](f: A => Either[EE, B]): Either[EE, B] = ???
+  def flatMap[EE >: E, B](f: A => Either[EE, B]): Either[EE, B] = this match {
+    case Right(x) => f(x)
+    case l: Left[E] => l
+  }
 
   def orElse[EE >: E, B >: A](b: => Either[EE, B]): Either[EE, B] = ???
 
