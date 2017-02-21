@@ -1,5 +1,3 @@
-import scala.annotation.tailrec
-
 sealed trait Stream[+A] {
 
   def toList: List[A] = this match {
@@ -28,6 +26,26 @@ sealed trait Stream[+A] {
     case Const(h,t) => f(h()) || t().exists(f)
     case _ => false
   }
+
+  def foldRight[B](x: => B)(f: (A, => B) => B): B = this match {
+    case Const(h,t) => f(h(), t().foldRight(x)(f))
+    case _ => x
+  }
+
+  def foldExists(p: A => Boolean): Boolean =
+    foldRight(false)((a,b) => p(a) || b)
+
+  def forAll(f: A => Boolean): Boolean = this match {
+    case Const(h, t) if t() == Stream.empty => f(h())
+    case Const(h, t) => f(h()) && t().forAll(f)
+  }
+
+  def foldTakeWhile(f: A => Boolean): Stream[A] =
+    foldRight(Stream.empty[A])((a,b) => if(f(a)) Stream.const(a, b) else Stream.empty)
+
+  def headOption: Option[A] =
+    foldRight(None: Option[A])((h,_) => if(h == Stream.empty) None else Some(h))
+
 
 }
 
