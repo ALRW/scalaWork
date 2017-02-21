@@ -13,8 +13,7 @@ sealed trait Stream[+A] {
     case _ => Empty
   }
 
-  @tailrec
-  final def drop(n: Int): Stream[A] = this match {
+  def drop(n: Int): Stream[A] = this match {
     case Const(h,t) if n > 1 => t().drop(n-1)
     case Const(h, t) if n == 1 => t()
     case _ => Stream.empty
@@ -23,6 +22,11 @@ sealed trait Stream[+A] {
   def takeWhile(f: A => Boolean): Stream[A] = this match {
     case Const(h,t) if f(h()) => Stream.const(h(), t().takeWhile(f))
     case _ => Stream.empty
+  }
+
+  def exists(f: A => Boolean): Boolean = this match {
+    case Const(h,t) => f(h()) || t().exists(f)
+    case _ => false
   }
 
 }

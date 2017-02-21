@@ -26,4 +26,11 @@ class StreamSpec extends FunSpec with Matchers {
     }
   }
 
+  describe("#exists"){
+    it("returns a boolean from running a function against a stream"){
+      Stream(2,3,5).exists(_ == 1) shouldBe false
+      Stream(1,2,3).exists(_ == 1) shouldBe true
+    }
+  }
+
 }
