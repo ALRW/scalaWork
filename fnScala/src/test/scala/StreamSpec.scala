@@ -60,9 +60,27 @@ class StreamSpec extends FunSpec with Matchers {
   }
 
   describe("#headOption"){
-    it("uses foldRight to return an option of the Head element"){
-      Stream(1,2,3,4).headOption shouldBe Some(1)
+    it("uses foldRight to return an option of the Head element") {
+      Stream(1, 2, 3, 4).headOption shouldBe Some(1)
       Stream.empty.headOption shouldBe None
+    }
+  }
+
+  describe("#map"){
+    it("applies a function to each element of a stream (implemented using foldRight)"){
+      Stream(1,2,3).map(_ + 1).toList shouldBe List(2,3,4)
+    }
+  }
+
+  describe("#append"){
+    it("appends an item to a stream"){
+      Stream(1,2,3).append(Stream(4)).toList shouldBe List(1,2,3,4)
+    }
+  }
+
+  describe("#flatMap"){
+    it("applies a function resulting in a Stream to each item in the Stream and returns a Stream only one level deep"){
+      Stream(1,2,3).flatMap((x) => Stream(x)).toList shouldBe List(1,2,3)
     }
   }
 

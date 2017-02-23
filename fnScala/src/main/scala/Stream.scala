@@ -44,9 +44,16 @@ sealed trait Stream[+A] {
     foldRight(Stream.empty[A])((a,b) => if(f(a)) Stream.const(a, b) else Stream.empty)
 
   def headOption: Option[A] =
-    foldRight(None: Option[A])((h,_) => if(h == Stream.empty) None else Some(h))
+    foldRight(None: Option[A])((h,_) => Some(h))
 
+  def map[B](f: A => B): Stream[B] =
+    foldRight(Stream.empty[B])((a,b) => Stream.const(f(a), b))
 
+  def append[B >: A](x: => Stream[B]): Stream[B] =
+    foldRight(x)((a,b) => Stream.const(a,b))
+
+  def flatMap[B](f: A => Stream[B]): Stream[B] =
+    foldRight(Stream.empty[B])((a,b) => f(a).append(b))
 }
 
 case object Empty extends Stream[Nothing]
