@@ -84,4 +84,22 @@ class StreamSpec extends FunSpec with Matchers {
     }
   }
 
+  describe("#constant"){
+    it("returns an infinite stream of a given value"){
+      Stream.constant("a").take(5).toList shouldBe List("a","a","a","a","a")
+    }
+  }
+
+  describe("#from"){
+    it("generates an stream of infinitely increasing numbers"){
+      Stream.from(3).take(5).toList shouldBe List(3,4,5,6,7)
+    }
+  }
+
+  describe("#fibs"){
+    it("generate an infinite stream of fibonacci numbers"){
+      Stream.fibs.take(8).toList shouldBe List(0,1,1,2,3,5,8,13)
+    }
+  }
+
 }

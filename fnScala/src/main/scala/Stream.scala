@@ -54,6 +54,7 @@ sealed trait Stream[+A] {
 
   def flatMap[B](f: A => Stream[B]): Stream[B] =
     foldRight(Stream.empty[B])((a,b) => f(a).append(b))
+
 }
 
 case object Empty extends Stream[Nothing]
@@ -66,6 +67,10 @@ object Stream {
     lazy val tail = tl
     Const(() => head, () => tail)
   }
+
+  def constant[A](a: A): Stream[A] = const(a, constant(a))
+
+  def from(n: Int): Stream[Int] = const(n, from(n + 1))
 
   def empty[A]: Stream[A] = Empty
 
