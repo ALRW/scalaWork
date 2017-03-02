@@ -102,4 +102,59 @@ class StreamSpec extends FunSpec with Matchers {
     }
   }
 
+  describe("#unfold"){
+    it("generalises the creation of infinite streams"){
+      Stream.unfold(1)(a => Some((a,1))).take(3).toList shouldBe List(1,1,1)
+    }
+  }
+
+  describe("#unfoldOnes"){
+    it("uses unfold to creat an infinite stream of 1's"){
+      Stream.unfoldOnes.take(3).toList shouldBe List(1,1,1)
+    }
+  }
+
+  describe("#unfoldConstant"){
+    it("uses unfold to create an infinite stream of a constant n"){
+      Stream.unfoldConstant(1).take(3).toList shouldBe List(1,1,1)
+    }
+  }
+
+  describe("#unfoldFrom"){
+    it("uses unfold to create an infinite stream of integers from a constant n onwards"){
+      Stream.unfoldFrom(2).take(5).toList shouldBe List(2,3,4,5,6)
+    }
+  }
+
+  describe("#unfoldfibs"){
+    it("uses unfold to produce the infinite stream of fibonacci numbers"){
+      Stream.unfoldfibs.take(8).toList shouldBe List(0,1,1,2,3,5,8,13)
+    }
+  }
+
+  describe("#unfoldMap"){
+    it("applies a function to each element of a stream (implemented using foldRight)"){
+      Stream(1,2,3).unfoldMap(_ + 1).toList shouldBe List(2,3,4)
+    }
+  }
+
+  describe("#unfoldTake") {
+    it("takes the first n elements of a stream using unfold") {
+      Stream(1, 2, 3, 4).unfoldTake(2).toList shouldBe List(1, 2)
+    }
+  }
+
+  describe("#unfoldTakeWhile") {
+    it("returns elements that match the given function using unfold") {
+      Stream(1, 2, 3, 4).unfoldTakeWhile(_ < 3).toList shouldBe List(1, 2)
+    }
+  }
+
+  describe("#zipWith"){
+    it("combines two streams together with a function"){
+      Stream(1,2).zipWith(Stream(2, 3))((a, b) => a + b).toList shouldBe List(3,5)
+
+    }
+  }
+
 }

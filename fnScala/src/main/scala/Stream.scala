@@ -55,6 +55,31 @@ sealed trait Stream[+A] {
   def flatMap[B](f: A => Stream[B]): Stream[B] =
     foldRight(Stream.empty[B])((a,b) => f(a).append(b))
 
+  def unfoldMap[B](f: A => B): Stream[B] =
+    Stream.unfold(this){
+      case Const(head,tail) => Some((f(head()), tail()))
+      case _ => None
+    }
+
+  def unfoldTake(n: Int): Stream[A] =
+    Stream.unfold((this, n)){
+      case (Const(h, t), 1) => Some(h(), (Empty, 0))
+      case (Const(h, t), n) if n > 1=> Some(h(), (t(), n - 1))
+      case _ => None
+    }
+
+  def unfoldTakeWhile(f: A => Boolean): Stream[A] =
+    Stream.unfold(this){
+      case Const(h,t) if f(h()) => Some(h(), t())
+      case _ => None
+    }
+
+  def zipWith[B,C](s: Stream[B])(f: (A,B) => C): Stream[C] =
+    Stream.unfold((this,s)){
+      case (Const(h1,t1), Const(h2,t2)) => Some((f(h1(), h2()), (t1(), t2())))
+      case _ => None
+    }
+
 }
 
 case object Empty extends Stream[Nothing]
@@ -72,10 +97,34 @@ object Stream {
 
   def from(n: Int): Stream[Int] = const(n, from(n + 1))
 
+  def fibs: Stream[Int] = {
+    def fibber(p: Int, c: Int): Stream[Int] = {
+      const(c, fibber(c, p + c))
+    }
+    const(0, fibber(0,1))
+  }
+
+  def unfold[A, S](z: S)(f: S => Option[(A, S)]): Stream[A] = f(z) match {
+    case Some((h,s)) => const(h, unfold(s)(f))
+    case None => empty
+  }
+
+
+  def unfoldOnes: Stream[Int] =
+    unfold(1)(_ => Some(1,1))
+
+  def unfoldConstant[A](c: A):Stream[A] =
+    unfold(c)(_ => Some(c,c))
+
+  def unfoldFrom(n: Int): Stream[Int] =
+    unfold(n)(x => Some((x, x + 1)))
+
+  def unfoldfibs: Stream[Int] =
+    unfold((0,1))(x => Some((x._1,(x._2, x._1 + x._2))))
+
   def empty[A]: Stream[A] = Empty
 
   def apply[A](as: A*): Stream[A] = {
     if(as.isEmpty) empty else const(as.head, apply(as.tail: _*))
   }
-
 }
