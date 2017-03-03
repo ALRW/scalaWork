@@ -104,7 +104,7 @@ class StreamSpec extends FunSpec with Matchers {
 
   describe("#unfold"){
     it("generalises the creation of infinite streams"){
-      Stream.unfold(1)(a => Some((a,1))).take(3).toList shouldBe List(1,1,1)
+      Stream.unfold(1)(_ => Some((1,1))).take(3).toList shouldBe List(1,1,1)
     }
   }
 
@@ -153,7 +153,12 @@ class StreamSpec extends FunSpec with Matchers {
   describe("#zipWith"){
     it("combines two streams together with a function"){
       Stream(1,2).zipWith(Stream(2, 3))((a, b) => a + b).toList shouldBe List(3,5)
+    }
+  }
 
+  describe("#zipAll"){
+    it("combines two streams continuing even if one stream is exhausted"){
+      Stream(1,2).zipAll(Stream(1,2,3)).toList shouldBe List((Some(1),Some(1)), (Some(2), Some(2)), (None, Some(3)))
     }
   }
 
