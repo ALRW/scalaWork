@@ -162,4 +162,29 @@ class StreamSpec extends FunSpec with Matchers {
     }
   }
 
+  describe("#startsWith"){
+    it("uses other functions to check whether one stream starts with another"){
+      Stream(1,2,3).startsWith(Stream(1,2)) shouldBe true
+    }
+  }
+
+  describe("#tails"){
+    it("returns a stream of streams containing the suffixes contained in the initial stream"){
+      Stream(1,2,3).tails.take(1).flatMap(x=>x).toList shouldBe List(1,2,3)
+    }
+  }
+
+  describe("#hasSubsequence"){
+    it("tests whether a stream contains a particular subsequence"){
+      Stream(1,2,3,4,5).hasSubsequence(Stream(2,3,4)) shouldBe true
+      Stream(4,5,6).hasSubsequence(Stream(1,2)) shouldBe false
+    }
+  }
+
+  describe("#scanRigh"){
+    it("generalises tails"){
+      Stream(1,2).scanRight(0)(_+_).toList shouldBe List(3,2,0)
+    }
+  }
+
 }

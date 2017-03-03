@@ -79,4 +79,11 @@ class OptionSpec extends FunSpec with Matchers{
       } == Some(List(1,2,3,4)))
     }
   }
+
+  describe("#isEmpty"){
+    it("gives a boolean value showing whether an option is empty or not"){
+      Some(1).isEmpty shouldBe false
+      None.isEmpty shouldBe true
+    }
+  }
 }

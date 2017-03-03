@@ -26,6 +26,10 @@ sealed trait Option[+A] {
     case _ => None
   }
 
+  def isEmpty: Boolean = this match {
+    case Some(_) => false
+    case None => true
+  }
 
 }
 
