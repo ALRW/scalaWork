@@ -32,5 +32,28 @@ object Par {
     def cancel(evenIfRunning: Boolean): Boolean = false
   }
 
+  def asyncF[A,B](f: A => B): A => Par[B] = (a: A) => lazyUnit(f(a))
+
+  def sortPar(parList: Par[List[Int]]): Par[List[Int]] =
+    map2(parList, unit())((a, _) => a.sorted)
+
+  def map[A,B](pa: Par[A])(f: A => B): Par[B] = map2(pa, unit())((a, _) => f(a))
+
+  def anotherSortPar(parList: Par[List[Int]]): Par[List[Int]] = map(parList)(_.sorted)
+
+  def parMap[A,B](pa: List[A])(f: A => B): Par[List[B]] = fork {
+    val fbs: List[Par[B]] = pa.map(asyncF(f))
+    sequence(fbs)
+  }
+
+  def sequence[A](l: List[Par[A]]): Par[List[A]] = l.foldRight[Par[List[A]]](unit(List()))((a, b)=> map2(a, b)(_ :: _))
+
+  def parFilter[A](as: List[A])(f: A => Boolean): Par[List[A]] = {
+    val ps: List[Par[List[A]]] = as.map( asyncF(a => if(f(a)) List(a) else List()))
+    map(sequence(ps))(_.flatten)
+  }
+
+  implicit class ParOps[A](p: Par[A])
+
 }
 
