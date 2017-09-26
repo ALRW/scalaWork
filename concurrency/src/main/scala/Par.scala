@@ -67,6 +67,8 @@ object Par {
   def chooser[A, B](pa: Par[A])(choices: A => Par[B]): Par[B] = es =>
     choices(pa(es).get)(es)
 
+  def join[A](a: Par[Par[A]]): Par[A] = es => run(es)(run(es)(a).get())
+
   implicit class ParOps[A](p: Par[A])
 
 }
