@@ -56,13 +56,13 @@ object Par {
   def delay[A](fa: => Par[A]): Par[A] = es => fa(es)
 
   def choice[A](cond: Par[Boolean])(t: Par[A], f: Par[A]): Par[A] =
-    choiceN(map(cond)(if (_) 1 else 0))(List(t, f))
+    chooser(map(cond)(if (_) 1 else 0))(List(t, f))
 
-  def choiceN[A](n: Par[Int])(choices: List[Par[A]]): Par[A] = es =>
-    choices(n(es).get)(es)
+  def choiceN[A](n: Par[Int])(choices: List[Par[A]]): Par[A] =
+    chooser(n)(choices)
 
-  def choiceMap[K, V](key: Par[K])(choices: Map[K, Par[V]]): Par[V] = es =>
-    choices(key(es).get)(es)
+  def choiceMap[K, V](key: Par[K])(choices: Map[K, Par[V]]): Par[V] =
+    chooser(key)(choices)
 
   def chooser[A, B](pa: Par[A])(choices: A => Par[B]): Par[B] = es =>
     choices(pa(es).get)(es)
